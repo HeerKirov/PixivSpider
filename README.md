@@ -12,7 +12,7 @@
 为了使用脚本，应当配置一个conf.json文件。
 调用`$ python app.py conf.json`来启用这个配置。
 配置应当包括以下内容：
-```json
+```
 {
     account: {
         username: <string> 你用来模拟登录的Pixiv 用户名。
@@ -27,7 +27,7 @@
 ```
 配置块应当包裹在一个JSON Object内。目前的配置块有2种可用的写法：
 1. 基于Pixiv ID进行批量下载。
-```json
+```
 {
     pid: <array|string|int> 要批量下载的Pixiv ID或其列表。
                             语法比较宽松。可以写 
@@ -39,7 +39,7 @@
 }
 ```
 2. 基于画师的Member ID进行批量下载。
-```json
+```
 {
     uid: <array|string|int> 要批量下载的画师的ID或其列表。
                             语法比较宽松。可以写
