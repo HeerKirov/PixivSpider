@@ -1,6 +1,7 @@
 import requests
 import random
 import proxy
+from requests.exceptions import ConnectionError
 
 
 user_agent = [
@@ -28,7 +29,6 @@ user_agent = [
 class Core(object):
     proxy_pool = proxy.ProxyPool()
     session = None
-    cookies = None
     use_proxy = True
 
     def __init__(self, use_proxy=True):
@@ -56,8 +56,20 @@ class Core(object):
 
     def get(self, use_proxy=False, headers=None, rand_user_agent=True, **kwargs):
         append_headers = self.get_headers(headers, rand_user_agent=rand_user_agent)
-        return self.session.get(**kwargs, headers=append_headers, proxies=self.get_proxy(use_proxy))
+        left_count = 3
+        while left_count > 0:
+            try:
+                return self.session.get(**kwargs, headers=append_headers, proxies=self.get_proxy(use_proxy))
+            except ConnectionError:
+                left_count -= 1
+        return None
 
     def post(self, use_proxy=False, headers=None, rand_user_agent=True, **kwargs):
         append_headers = self.get_headers(headers, rand_user_agent=rand_user_agent)
-        return self.session.post(**kwargs, headers=append_headers, proxies=self.get_proxy(use_proxy))
+        left_count = 3
+        while left_count > 0:
+            try:
+                return self.session.post(**kwargs, headers=append_headers, proxies=self.get_proxy(use_proxy))
+            except ConnectionError:
+                left_count -= 1
+        return None

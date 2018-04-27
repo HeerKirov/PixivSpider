@@ -169,6 +169,7 @@ class Configure:
         ret = self.pixiv.get_member_image_list(uid=uid, max_count=end)
         if ret is None:
             return
+        self.notice.log("||==处理Member ID %s==||" % (uid,))
         head = begin - 1 if begin is not None else 0
         tail = end if end is not None else len(ret)
         for i in range(head, tail):
@@ -179,6 +180,7 @@ class Configure:
         ret = self.pixiv.get_image_source(pid)
         if ret is None:
             return
+        self.notice.log("|==处理Pixiv ID %s==|" % (pid,))
         if len(ret["content"]) == 1 or (len(ret["content"]) > 1 and multi_save is None):
             content, pg_index, extension = ret["content"][0]
             file_path = save.format(title=ret["title"],
